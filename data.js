@@ -64,6 +64,19 @@
    here since each item is a distinct product, not a variant of one.
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   A NOTE ON IMAGE SIZE (the biggest lever for speed)
+   --------------------------------------------------------------------------
+   The site now lazy-loads photos, fades them in, and only shows the
+   trending grid in batches — but none of that helps if a photo file
+   itself is 4-5MB straight off a phone. Before adding an image:
+     - Resize it to roughly 800px on the longest side (these are shown as
+       small thumbnails/cards, never full-screen).
+     - Save/export as .webp or compressed .jpg — aim under ~150KB each.
+     - A free tool like squoosh.app (drag, resize, export) takes ~10
+       seconds per photo and makes the biggest difference of anything here.
+   -------------------------------------------------------------------------- */
+
 const PRODUCTS = {
 //   "1": {
 //     id: "1",
@@ -198,25 +211,25 @@ const PRODUCTS = {
 //     ],
 //     affiliateLink: "https://example.com/hydroflow-bottle"
 //   },
-//   "8": {
-//     id: "8",
-//     name: "GlideStep Running Shoes",
-//     category: "Fitness",
-//     icon: "shoe",
-//     image: "",
-//     tagline: "The pair that made three friends stop shoe-shopping.",
-//     price: 2399,
-//     originalPrice: 3299,
-//     currency: "₹",
-//     rating: 4.6,
-//     reviews: 1032,
-//     highlights: [
-//       "Breathable knit upper, sock-like fit",
-//       "Responsive foam midsole for daily runs",
-//       "Reinforced heel for extra stability"
-//     ],
-//     affiliateLink: "https://example.com/glidestep-shoes"
-//   },
+  "2": {
+    id: "2",
+    name: "Laptop Cleaner Kit",
+    category: "Tech",
+    icon: "box",
+    image: "images/cleaner.jpeg",
+    tagline: "Gadget Cleaning Kit",
+    price: 189,
+    originalPrice: 699,
+    currency: "₹",
+    rating: 3.7,
+    reviews: 112,
+    highlights: [
+      "Gadget Deals - 7 in 1 Laptop Cleaner Kit",
+      "Keyboard Cleaner, Screen Cleaner, Dust Blower, Cleaning Brush, Microfiber Cloth, Cleaning Gel, and Cleaning Solution",
+      "Perfect for cleaning laptops, keyboards"
+    ],
+    affiliateLink: "https://link.amazon/B0hdWNO49"
+  },
   "1": {
     id: "1",
     name: "Trendy Men Formal Shirt",
