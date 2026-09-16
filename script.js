@@ -35,9 +35,18 @@ function renderStars(rating) {
   return out;
 }
 
-function productMedia(media, alt) {
+/* eager=true is for the single product/collection card the person just
+   searched for — that's the one thing on screen they're waiting on, so it
+   loads immediately at high priority. Everything else (trending grid)
+   stays lazy + low priority so the browser only spends bandwidth on
+   photos that are actually about to scroll into view. Every photo also
+   fades in on load (see .media-photo in style.css) instead of popping in,
+   which hides the load time behind the existing gradient placeholder. */
+function productMedia(media, alt, eager = false) {
   if (media.image) {
-    return `<img src="${media.image}" alt="${alt}" loading="lazy">`;
+    const loading = eager ? 'eager' : 'lazy';
+    const priority = eager ? 'high' : 'low';
+    return `<img src="${media.image}" alt="${alt}" loading="${loading}" decoding="async" fetchpriority="${priority}" class="media-photo" onload="this.classList.add('is-loaded')" onerror="this.classList.add('is-loaded')">`;
   }
   return `<div class="media-icon">${iconSvg(media.icon)}</div>`;
 }
@@ -82,7 +91,7 @@ function buildResultCard(product, variantIndex) {
 
   return `
     <div class="result-media">
-      ${productMedia(media, product.name)}
+      ${productMedia(media, product.name, true)}
       ${discount ? `<span class="discount-pill">${discount}% off</span>` : ''}
     </div>
     <div class="result-body">
@@ -146,7 +155,7 @@ function buildCollectionCard(collection, itemIndex) {
       <button type="button" class="collection-arrow collection-arrow-prev" data-dir="-1" aria-label="Previous item">
         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 4.5L6 10l6.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      ${productMedia(item, item.name)}
+      ${productMedia(item, item.name, true)}
       <button type="button" class="collection-arrow collection-arrow-next" data-dir="1" aria-label="Next item">
         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 4.5L14 10l-6.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -294,10 +303,25 @@ function buildTrendingCard(product) {
   `;
 }
 
+/* ==========================================================================
+   Trending grid — shown in batches instead of all at once.
+   --------------------------------------------------------------------------
+   With just a couple of products this made no difference, but as the
+   catalog grows, dumping every card (and every photo) into the page on
+   load would mean the browser tries to fetch dozens of images at once.
+   Rendering a first batch and revealing more on demand keeps the initial
+   page light no matter how many products get added later.
+   ========================================================================== */
+
+const TRENDING_BATCH_SIZE = 8;
+let trendingVisibleCount = TRENDING_BATCH_SIZE;
+
 function renderTrending() {
   const grid = document.getElementById('trendingGrid');
   const items = Object.values(PRODUCTS);
-  grid.innerHTML = items.map(buildTrendingCard).join('');
+  const visibleItems = items.slice(0, trendingVisibleCount);
+
+  grid.innerHTML = visibleItems.map(buildTrendingCard).join('');
 
   grid.querySelectorAll('.trend-card').forEach(card => {
     card.addEventListener('click', (e) => {
@@ -307,6 +331,33 @@ function renderTrending() {
       handleLookup(code);
     });
   });
+
+  renderLoadMoreButton(items.length);
+}
+
+function renderLoadMoreButton(totalCount) {
+  const trendingSection = document.getElementById('trending');
+  let btn = document.getElementById('loadMoreTrending');
+
+  if (trendingVisibleCount >= totalCount) {
+    if (btn) btn.remove();
+    return;
+  }
+
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'loadMoreTrending';
+    btn.className = 'load-more-btn';
+    btn.addEventListener('click', () => {
+      trendingVisibleCount += TRENDING_BATCH_SIZE;
+      renderTrending();
+    });
+    trendingSection.appendChild(btn);
+  }
+
+  const remaining = totalCount - trendingVisibleCount;
+  btn.textContent = `Show more (${remaining} left)`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
