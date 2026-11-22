@@ -1,138 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ValueSense — Find the product from the reel</title>
-<meta name="description" content="Enter the code from a ValueSense reel and get the product, the price, and the link in one search.">
-<meta name="cuelinks-verification" content ="VERIFY-CL-P9MWY3">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon-32x32.png" sizes="32x32" type="image/png">
-<link rel="icon" href="favicon-16x16.png" sizes="16x16" type="image/png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" href="favicon.ico" sizes="48x48">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>beyond numbers — MIS & business intelligence for small businesses</title>
+  <meta name="description" content="beyond numbers turns messy excel sheets into clean reports, automated MIS and power bi dashboards for small businesses.">
+  <meta name="theme-color" content="#f5f4ef">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0a0a'/%3E%3Crect x='3' y='9' width='3' height='4' fill='%23fff'/%3E%3Crect x='7' y='6' width='3' height='7' fill='%23fff'/%3E%3Crect x='11' y='3' width='3' height='10' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
+  <!-- pixel analytics background (drawn in script.js) -->
+  <canvas id="px" aria-hidden="true"></canvas>
+  <div class="progress" id="progress"></div>
 
-<div class="noise-layer" aria-hidden="true"></div>
-
-<header class="site-header">
-  <div class="header-inner">
-    <a href="#top" class="brand">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M14 16 L14 12 C14 7.6 17.6 4 22 4 L26 4 C30.4 4 34 7.6 34 12 L34 16" stroke="url(#bagGrad)" stroke-width="3.2" stroke-linecap="round"/>
-          <rect x="8" y="16" width="32" height="26" rx="6" fill="#0d1220" stroke="url(#bagGrad)" stroke-width="3.2"/>
-          <circle cx="24" cy="27" r="4.5" fill="none" stroke="url(#bagGrad)" stroke-width="2.4"/>
-          <defs>
-            <linearGradient id="bagGrad" x1="8" y1="4" x2="40" y2="42" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#6fa8ff"/>
-              <stop offset="1" stop-color="#2f6ff2"/>
-            </linearGradient>
-          </defs>
-        </svg>
-      </span>
-      <span class="brand-word">Value<span class="brand-accent">Sense</span></span>
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="#top" class="logo" aria-label="beyond numbers home">
+      <span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>beyond numbers</span>
     </a>
-    <nav class="site-nav">
-      <a href="#lookup">Find a product</a>
-      <a href="#how">How it works</a>
-      <a href="#trending">Trending picks</a>
+    <nav class="links" id="links" aria-label="main">
+      <a href="#services">services</a>
+      <a href="#process">process</a>
+      <a href="#dashboard">dashboards</a>
+      <a href="#contact" class="btn solid sm">free data audit</a>
     </nav>
-    <a class="header-cta" href="https://www.instagram.com/value.sense?stkn=MTNsYW9vczMzbDZ4dA==" target="_blank" rel="noopener">Follow the reels</a>
-  </div>
-</header>
+    <button class="burger" id="burger" aria-label="open menu" aria-expanded="false"><span></span><span></span></button>
+  </header>
 
-<main id="top">
+  <main>
+    <!-- HERO -->
+    <section class="hero wrap" id="top">
+      <div class="hero-copy">
+        <div class="eyebrow mono"><span class="dot"></span> MIS &amp; business intelligence agency</div>
+        <h1>from cluttered<br>numbers to <span class="u">clear decisions</span>.</h1>
+        <p class="lead">we turn messy excel sheets into clean reports, automated MIS and power bi dashboards, so small businesses can see their sales, revenue and performance at a glance.</p>
+        <div class="cta">
+          <a class="btn solid" href="#contact">get a free data audit</a>
+          <a class="btn ghost" href="#services">see what we do</a>
+        </div>
+        <ul class="proof mono">
+            <li data-tool="excel">excel</li>
+            <li data-tool="powerbi">power bi</li>
+            <li data-tool="powerquery">power query</li>
+            <li data-tool="dax">dax</li>
+        </ul>
+      </div>
 
-  <section class="hero" id="lookup">
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <p class="hero-kicker">Saw a code in a reel?</p>
-      <h1 class="hero-title">Type the code.<br>Get the product.</h1>
-      <p class="hero-sub">Drop the product code below and we'll pull up the exact product, the price, and the link — no scrolling through comments to find it.</p>
+      <figure class="focus" id="focus" tabindex="0" aria-label="a cluttered scribble that straightens into one clear line when you hover or tap">
+        <span class="chip mono">fig. 01</span>
+        <svg id="scribble" viewBox="0 0 520 300" overflow="visible" aria-hidden="true">
+          <g id="strands"></g>
+          <g id="pencil">
+            <polygon points="0,0 15,-5.5 15,5.5" fill="#f5f4ef" stroke="#0a0a0a" stroke-width="1.5" stroke-linejoin="round"/>
+            <polygon points="0,0 4,-1.5 4,1.5" fill="#0a0a0a"/>
+            <rect x="15" y="-5.5" width="42" height="11" fill="#0a0a0a"/>
+            <rect x="24" y="-5.5" width="3" height="11" fill="#f5f4ef" opacity=".35"/>
+            <rect x="57" y="-5.5" width="7" height="11" fill="#8a8a85"/>
+            <rect x="64" y="-5.5" width="9" height="11" rx="2" fill="#f5f4ef" stroke="#0a0a0a" stroke-width="1.5"/>
+          </g>
+        </svg>
+        <figcaption class="mono">
+          <span class="state"><span class="s-a">cluttered brain</span><span class="s-b">focused brain</span></span>
+          <span class="hint"><span class="h-hover">hover</span><span class="h-tap">tap</span> to focus</span>
+        </figcaption>
+      </figure>
+    </section>
 
-      <form class="lookup-form" id="lookupForm" autocomplete="off">
-        <label class="visually-hidden" for="productId">Product code</label>
-        <input
-          type="text"
-          id="productId"
-          name="productId"
-          placeholder="Enter the code, e.g. 4"
-          inputmode="numeric"
-        >
-        <button type="submit">
-          <span>Find it</span>
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M9 3a6 6 0 104.472 10.028l3.25 3.25a1 1 0 001.414-1.414l-3.25-3.25A6 6 0 009 3zm-4 6a4 4 0 118 0 4 4 0 01-8 0z" fill="currentColor"/></svg>
-        </button>
-      </form>
-      <p class="hero-hint" id="lookupHint">Enter the product code and get the deal.</p>
+    <!-- TOOLS MARQUEE -->
+    <section class="marquee" aria-label="tools we use">
+        <div class="track mono">
+            <span data-tool="excel">microsoft excel</span><span data-tool="powerbi">power bi</span><span data-tool="powerquery">power query</span><span data-tool="dax">dax</span><span data-tool="pivot">pivot tables</span><span data-tool="vba">vba macros</span><span data-tool="sheets">google sheets</span><span data-tool="sql">sql</span>
+            <span data-tool="excel">microsoft excel</span><span data-tool="powerbi">power bi</span><span data-tool="powerquery">power query</span><span data-tool="dax">dax</span><span data-tool="pivot">pivot tables</span><span data-tool="vba">vba macros</span><span data-tool="sheets">google sheets</span><span data-tool="sql">sql</span>
+        </div>
+    </section>
+
+    <!-- SERVICES: hanging cards -->
+    <section class="services wrap" id="services">
+      <div class="head reveal">
+        <p class="kicker mono">01 / services</p>
+        <h2>what we do, <span class="soft">in five cards.</span></h2>
+        <p class="sub">pick one, or let us run the whole chain from raw data to monthly insights.</p>
+      </div>
+
+      <div class="rack">
+        <div class="rack-in">
+          <article class="hang reveal" style="--d:0ms">
+            <div class="string"></div><i class="clip"></i>
+            <div class="card" tabindex="0" role="button" aria-label="excel data cleaning, flip for details">
+              <div class="inner">
+                <div class="face front">
+                  <div class="row"><span class="mono num">01</span><span class="ico" data-sprite="table" data-px="5"></span></div>
+                  <div class="bottom"><h3>excel data<br>cleaning</h3><p class="mono flip"><span class="f-hover">hover to flip →</span><span class="f-tap">tap to flip →</span></p></div>
+                </div>
+                <div class="face back">
+                  <h3>messy in, trusted out</h3>
+                  <ul>
+                    <li>remove duplicates, blanks &amp; errors</li>
+                    <li>fix dates, names, units &amp; formats</li>
+                    <li>merge many files into one source</li>
+                    <li>sheets that don't break again</li>
+                  </ul>
+                  <p class="mono get">you get: one clean dataset</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="hang reveal" style="--d:80ms">
+            <div class="string"></div><i class="clip"></i>
+            <div class="card" tabindex="0" role="button" aria-label="sales and revenue reporting, flip for details">
+              <div class="inner">
+                <div class="face front">
+                  <div class="row"><span class="mono num">02</span><span class="ico" data-sprite="doc" data-px="5"></span></div>
+                  <div class="bottom"><h3>sales &amp; revenue<br>reporting</h3><p class="mono flip"><span class="f-hover">hover to flip →</span><span class="f-tap">tap to flip →</span></p></div>
+                </div>
+                <div class="face back">
+                  <h3>numbers you can read</h3>
+                  <ul>
+                    <li>daily, weekly &amp; monthly reports</li>
+                    <li>by product, branch, salesperson</li>
+                    <li>targets vs actuals</li>
+                    <li>a short plain-language summary</li>
+                  </ul>
+                  <p class="mono get">you get: reports in 2 minutes</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="hang reveal" style="--d:160ms">
+            <div class="string"></div><i class="clip"></i>
+            <div class="card" tabindex="0" role="button" aria-label="automated MIS, flip for details">
+              <div class="inner">
+                <div class="face front">
+                  <div class="row"><span class="mono num">03</span><span class="ico" data-sprite="bolt" data-px="5"></span></div>
+                  <div class="bottom"><h3>automated<br>MIS</h3><p class="mono flip"><span class="f-hover">hover to flip →</span><span class="f-tap">tap to flip →</span></p></div>
+                </div>
+                <div class="face back">
+                  <h3>stop copy-pasting</h3>
+                  <ul>
+                    <li>power query &amp; macro automation</li>
+                    <li>one-click refresh</li>
+                    <li>formats ready to email or print</li>
+                    <li>same report, every time</li>
+                  </ul>
+                  <p class="mono get">you get: hours back each week</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="hang reveal" style="--d:240ms">
+            <div class="string"></div><i class="clip"></i>
+            <div class="card" tabindex="0" role="button" aria-label="power bi dashboards, flip for details">
+              <div class="inner">
+                <div class="face front">
+                  <div class="row"><span class="mono num">04</span><span class="ico" data-sprite="bars" data-px="5"></span></div>
+                  <div class="bottom"><h3>power bi<br>dashboards</h3><p class="mono flip"><span class="f-hover">hover to flip →</span><span class="f-tap">tap to flip →</span></p></div>
+                </div>
+                <div class="face back">
+                  <h3>your business, one screen</h3>
+                  <ul>
+                    <li>interactive filters &amp; drill-down</li>
+                    <li>works on phone and laptop</li>
+                    <li>secure sharing with your team</li>
+                    <li>auto-refreshing data</li>
+                  </ul>
+                  <p class="mono get">you get: live visibility</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="hang reveal" style="--d:320ms">
+            <div class="string"></div><i class="clip"></i>
+            <div class="card" tabindex="0" role="button" aria-label="performance tracking, flip for details">
+              <div class="inner">
+                <div class="face front">
+                  <div class="row"><span class="mono num">05</span><span class="ico" data-sprite="trend" data-px="5"></span></div>
+                  <div class="bottom"><h3>performance<br>tracking</h3><p class="mono flip"><span class="f-hover">hover to flip →</span><span class="f-tap">tap to flip →</span></p></div>
+                </div>
+                <div class="face back">
+                  <h3>know what to fix next</h3>
+                  <ul>
+                    <li>kpis built around your goals</li>
+                    <li>trends, dips &amp; revenue leaks</li>
+                    <li>best &amp; worst performers</li>
+                    <li>monthly insight call</li>
+                  </ul>
+                  <p class="mono get">you get: clear next steps</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="process wrap" id="process">
+      <div class="head reveal">
+        <p class="kicker mono">02 / process</p>
+        <h2>simple, <span class="soft">from first call to first dashboard.</span></h2>
+      </div>
+      <ol class="steps">
+        <li class="reveal" style="--d:0ms"><span class="mono n">01</span><h3>share your data</h3><p>send the excel files, exports or a sample. an nda is no problem.</p></li>
+        <li class="reveal" style="--d:100ms"><span class="mono n">02</span><h3>we clean &amp; model</h3><p>one tidy, consistent source of truth, with the logic documented.</p></li>
+        <li class="reveal" style="--d:200ms"><span class="mono n">03</span><h3>build mis &amp; dashboard</h3><p>automated reports and a dashboard shaped around your decisions.</p></li>
+        <li class="reveal" style="--d:300ms"><span class="mono n">04</span><h3>review every month</h3><p>a short call on what changed, what's leaking and what to do next.</p></li>
+      </ol>
+    </section>
+
+    <!-- DASHBOARD PREVIEW -->
+    <section class="preview wrap" id="dashboard">
+      <div class="preview-copy reveal">
+        <p class="kicker mono">03 / the outcome</p>
+        <h2>from 14 files <span class="soft">to one screen.</span></h2>
+        <ul class="ba">
+          <li><span class="mono tag">before</span>three versions of the same sheet, numbers that never match, reports built at midnight.</li>
+          <li><span class="mono tag dark">after</span>one trusted dashboard, auto-refreshed, answering "how are we doing?" in seconds.</li>
+        </ul>
+        <a class="btn solid" href="#contact">see it on your data</a>
+      </div>
+
+      <div class="dash reveal" id="dash" style="--d:120ms">
+        <div class="dash-top">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="mono">sales_overview · sample view</span>
+          <span class="live mono"><b></b>live</span>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><span class="mono lab">revenue</span><strong>₹<span data-count="24.8" data-dec="1">0</span>L</strong><em class="up mono">▲ 12.4%</em></div>
+          <div class="kpi"><span class="mono lab">orders</span><strong><span data-count="1284">0</span></strong><em class="up mono">▲ 8.1%</em></div>
+          <div class="kpi"><span class="mono lab">margin</span><strong><span data-count="18.4" data-dec="1">0</span>%</strong><em class="dn mono">▼ 1.2%</em></div>
+        </div>
+        <div class="charts">
+          <div class="chartbox">
+            <span class="mono lab">monthly revenue</span>
+            <div class="bars" id="bars"></div>
+          </div>
+          <div class="chartbox">
+            <span class="mono lab">top products</span>
+            <div class="meters">
+              <div class="m"><span>product a</span><i style="--w:92%"></i></div>
+              <div class="m"><span>product b</span><i style="--w:71%"></i></div>
+              <div class="m"><span>product c</span><i style="--w:54%"></i></div>
+              <div class="m"><span>product d</span><i style="--w:33%"></i></div>
+            </div>
+            <svg class="spark" viewBox="0 0 200 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M0 42 L25 36 L50 40 L75 28 L100 31 L125 20 L150 24 L175 10 L200 6"/></svg>
+          </div>
+        </div>
+        <p class="mono note">illustrative data. your dashboard uses your numbers.</p>
+      </div>
+    </section>
+
+    <!-- WHO -->
+    <section class="who wrap">
+      <div class="head reveal">
+        <p class="kicker mono">04 / who it's for</p>
+        <h2>built for <span class="soft">small teams with big spreadsheets.</span></h2>
+      </div>
+      <ul class="tags reveal">
+        <li>retail shops</li><li>distributors</li><li>d2c brands</li><li>restaurants &amp; cafes</li><li>clinics</li><li>manufacturers</li><li>service firms</li><li>freelancers &amp; agencies</li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="wrap contact-in">
+        <div class="contact-copy reveal">
+          <p class="kicker mono">05 / let's talk</p>
+          <h2>send us one messy sheet.<br><span class="soft">we'll show you what's inside it.</span></h2>
+          <p class="sub">free data audit. you share a sample file, we reply with what we'd clean, automate and visualise.</p>
+          <p class="mono reach">
+            <a data-email href="#">hello@beyondnumbers.in</a><br>
+            <a data-wa href="#" target="_blank" rel="noopener">whatsapp us →</a>
+          </p>
+        </div>
+
+        <form class="form reveal" id="form" style="--d:100ms">
+          <label><span class="mono">your name</span><input name="name" required autocomplete="name"></label>
+          <label><span class="mono">business</span><input name="business" required autocomplete="organization"></label>
+          <label><span class="mono">what do you need?</span>
+            <select name="need">
+              <option>excel data cleaning</option>
+              <option>sales &amp; revenue reports</option>
+              <option>automated MIS</option>
+              <option>power bi dashboard</option>
+              <option>not sure yet</option>
+            </select>
+          </label>
+          <label><span class="mono">tell us a little (optional)</span><textarea name="message" rows="3"></textarea></label>
+          <button class="btn light" type="submit">send via whatsapp →</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in mono">
+      <span>© <span id="year">2026</span> beyond numbers</span>
+      <span>numbers, but make them clear.</span>
     </div>
-  </section>
+  </footer>
 
-  <section class="result-section" id="resultSection" hidden>
-    <div class="result-card" id="resultCard"></div>
-  </section>
-
-  <section class="empty-state" id="emptyState" hidden>
-    <div class="empty-inner">
-      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="27" cy="27" r="16" stroke="currentColor" stroke-width="3"/><path d="M38.5 38.5 L52 52" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M20 27h14M27 20v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity="0.5"/></svg>
-      <h3>No match for that code</h3>
-      <p>Double-check the code shown at the end of the reel — it's usually a single number in the corner of the last frame.</p>
-    </div>
-  </section>
-
-  <section class="how" id="how">
-    <h2>Three steps from reel to receipt</h2>
-    <div class="how-steps">
-      <article class="how-step">
-        <span class="how-num">1</span>
-        <h3>Watch the reel</h3>
-        <p>Every product we cover gets its own short reel on Instagram, with a code shown near the end.</p>
-      </article>
-      <article class="how-step">
-        <span class="how-num">2</span>
-        <h3>Note the code</h3>
-        <p>It's a short number, usually one or two digits, sitting quietly in the corner of the last few frames.</p>
-      </article>
-      <article class="how-step">
-        <span class="how-num">3</span>
-        <h3>Search it here</h3>
-        <p>Type it into the box above and we'll bring up the product, the price, and the link straight away.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="trending" id="trending">
-    <div class="trending-head">
-      <h2>Currently featured</h2>
-      <p>A running list of what's live on the channel right now — tap any card to open it.</p>
-    </div>
-    <div class="trending-grid" id="trendingGrid"></div>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <span class="brand-word small">Value<span class="brand-accent">Sense</span></span>
-      <p>Better products. Smarter choices. Everyday value.</p>
-    </div>
-    <div class="footer-links">
-      <a href="https://www.instagram.com/value.sense?stkn=MTNsYW9vczMzbDZ4dA==" target="_blank" rel="noopener">Instagram</a>
-      <!-- <a href="#" target="_blank" rel="noopener">YouTube</a> -->
-      <a href="#how">How it works</a>
-    </div>
-  </div>
-  <p class="footer-disclaimer">ValueSense may earn a commission from purchases made through links on this site. Prices and availability are set by the retailer and can change at any time.</p>
-</footer>
-
-<script src="data.js"></script>
-<script src="script.js"></script>
+  <script src="script.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>
