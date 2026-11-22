@@ -1,373 +1,431 @@
-/* ==========================================================================
-   ValueSense — lookup logic
-   ========================================================================== */
+/* beyond numbers — script.js */
 
-const ICONS = {
-  earbuds: '<path d="M17 12c0-4-3-7-7-7S3 8 3 12v6a3 3 0 003 3 3 3 0 003-3v-5a3 3 0 00-3-3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M17 12v6a3 3 0 01-3 3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="6" cy="18" r="1.6" fill="currentColor"/><circle cx="14" cy="21" r="1.6" fill="currentColor"/>',
-  lamp: '<path d="M7 21h10M12 21v-6M4 9l8-6 8 6M4 9h16l-2.5 6h-11L4 9z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>',
-  backpack: '<rect x="5" y="8" width="14" height="13" rx="3" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M8 8V6a4 4 0 018 0v2M8 12h8M9 21v-5h6v5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>',
-  watch: '<rect x="7" y="7" width="10" height="10" rx="3" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M9 7V4h6v3M9 17v3h6v-3M12 10v2.3l1.6 1" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
-  kettle: '<path d="M6 10h9a3 3 0 013 3v0a3 3 0 01-3 3h-1" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M5 8h9l-1 10a2 2 0 01-2 2H8a2 2 0 01-2-2L5 8z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M8 8V6a2 2 0 114 0v2" stroke="currentColor" stroke-width="1.6" fill="none"/>',
-  keyboard: '<rect x="3" y="7" width="18" height="11" rx="2.2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M6.5 10.5h.01M10 10.5h.01M13.5 10.5h.01M17 10.5h.01M6.5 14h.01M17 14h.01M9.5 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
-  bottle: '<path d="M10 3h4v3.2l1.4 1.8v11a2 2 0 01-2 2h-2.8a2 2 0 01-2-2V8l1.4-1.8V3z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M9.5 13h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
-  shoe: '<path d="M3 16.5c0-1.2.8-2 1.8-2.4L11 11.8c.7-.3 1.2-.9 1.5-1.6l.6-1.6a1.4 1.4 0 012.5-.2l1.6 2.7 2.6 1.6c.8.5 1.2 1.3 1.2 2.2V17a2 2 0 01-2 2H5a2 2 0 01-2-2v-.5z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>',
-  box: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M4 7.5L12 12l8-4.5M12 12v9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>'
+/* ============ EDIT THESE ============ */
+const CONFIG = {
+  whatsapp: "919999999999",        // your number with country code, no + or spaces
+  email: "hello@beyondnumbers.in"  // your email
+};
+/* ==================================== */
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canHover = window.matchMedia('(hover: hover)').matches;
+
+/* ---------- pixel sprites (tools / analysis icons) ---------- */
+const SPRITES = {
+  magnifier: [
+    "..#####....",
+    ".#.....#...",
+    "#.......#..",
+    "#.......#..",
+    "#.......#..",
+    ".#.....#...",
+    "..#####....",
+    ".......#...",
+    "........#..",
+    ".........#.",
+    "..........#"
+  ],
+  bars: [
+    ".........##",
+    ".........##",
+    ".........##",
+    ".....##..##",
+    ".....##..##",
+    ".....##..##",
+    ".##..##..##",
+    ".##..##..##",
+    ".##..##..##",
+    ".##..##..##",
+    "###########"
+  ],
+  trend: [
+    ".........##",
+    "........##.",
+    ".#.....##..",
+    ".##...##...",
+    "..#..##....",
+    "...###.....",
+    "...........",
+    "#..........",
+    "#..........",
+    "#..........",
+    "###########"
+  ],
+  sigma: [
+    "#########",
+    "#.......#",
+    ".#.......",
+    "..#......",
+    "...#.....",
+    "....#....",
+    "...#.....",
+    "..#......",
+    ".#.......",
+    "#.......#",
+    "#########"
+  ],
+  eye: [
+    "...........",
+    "...#####...",
+    ".##.....##.",
+    "#...###...#",
+    "#..#####..#",
+    "#...###...#",
+    ".##.....##.",
+    "...#####..."
+  ],
+  table: [
+    "###########",
+    "#.........#",
+    "###########",
+    "#...#.....#",
+    "#...#.....#",
+    "###########",
+    "#...#.....#",
+    "#...#.....#",
+    "###########"
+  ],
+  doc: [
+    "#######..",
+    "#.....##.",
+    "#.....#.#",
+    "#.....###",
+    "#.###...#",
+    "#.......#",
+    "#.###...#",
+    "#.......#",
+    "#########"
+  ],
+  bolt: [
+    ".....####",
+    "....###..",
+    "...###...",
+    "..######.",
+    "....###..",
+    "...###...",
+    "..###....",
+    ".##......"
+  ]
 };
 
-function iconSvg(name) {
-  const path = ICONS[name] || ICONS.box;
-  return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">${path}</svg>`;
+function spriteSVG(name, px, color) {
+  const rows = SPRITES[name];
+  const w = Math.max(...rows.map(r => r.length));
+  const h = rows.length;
+  let rects = '';
+  rows.forEach((row, y) => [...row].forEach((c, x) => {
+    if (c === '#') rects += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
+  }));
+  return `<svg viewBox="0 0 ${w} ${h}" width="${w * px}" height="${h * px}" fill="${color || 'currentColor'}" shape-rendering="crispEdges" aria-hidden="true">${rects}</svg>`;
 }
 
-function formatPrice(currency, amount) {
-  return currency + amount.toLocaleString('en-IN');
+document.querySelectorAll('[data-sprite]').forEach(el => {
+  el.innerHTML = spriteSVG(el.dataset.sprite, Number(el.dataset.px) || 5);
+});
+
+
+/* ---------- tool logos ---------- */
+const S = 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+const TOOL_ICONS = {
+  excel:      `<rect x="3" y="3" width="18" height="18" rx="2" ${S}/><path d="M8 8l8 8M16 8l-8 8" ${S}/>`,
+  powerbi:    `<rect x="3" y="12" width="5" height="9" rx="1"/><rect x="9.5" y="7" width="5" height="14" rx="1"/><rect x="16" y="3" width="5" height="18" rx="1"/>`,
+  powerquery: `<path d="M3 4h18l-7 8v6l-4 2v-8z" ${S}/>`,
+  dax:        `<rect x="2.5" y="4" width="19" height="16" rx="2" ${S}/><text x="12" y="15.5" text-anchor="middle" font-size="9" font-weight="700" font-family="monospace">fx</text>`,
+  pivot:      `<rect x="3" y="3" width="18" height="18" rx="2" ${S}/><path d="M3 9h18M9 9v12" ${S}/>`,
+  vba:        `<path d="M9 7l-5 5 5 5M15 7l5 5-5 5" ${S}/>`,
+  sheets:     `<rect x="4" y="3" width="16" height="18" rx="2" ${S}/><path d="M4 9h16M4 15h16M12 9v12" ${S}/>`,
+  sql:        `<ellipse cx="12" cy="6" rx="8" ry="3" ${S}/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" ${S}/>`
+};
+document.querySelectorAll('[data-tool]').forEach(el => {
+  const d = TOOL_ICONS[el.dataset.tool];
+  if (d) el.insertAdjacentHTML('afterbegin', `<svg class="tl" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${d}</svg>`);
+});
+
+/* ---------- small things: year, links, nav, progress ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('[data-email]').forEach(a => { a.href = 'mailto:' + CONFIG.email; a.textContent = CONFIG.email; });
+document.querySelectorAll('[data-wa]').forEach(a => { a.href = 'https://wa.me/' + CONFIG.whatsapp; });
+
+const burger = document.getElementById('burger');
+const links = document.getElementById('links');
+burger.addEventListener('click', () => {
+  const open = links.classList.toggle('open');
+  burger.setAttribute('aria-expanded', open);
+});
+links.addEventListener('click', e => {
+  if (e.target.closest('a')) { links.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+});
+
+const progress = document.getElementById('progress');
+function onScroll() {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+}
+addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* ---------- scroll reveal + count-up ---------- */
+function countUp(el) {
+  const target = Number(el.dataset.count);
+  const dec = Number(el.dataset.dec) || 0;
+  const dur = 1600;
+  const start = performance.now();
+  (function tick(now) {
+    const k = Math.min(1, (now - start) / dur);
+    const v = target * (1 - Math.pow(1 - k, 3));
+    el.textContent = v.toLocaleString('en-IN', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    if (k < 1) requestAnimationFrame(tick);
+  })(start);
 }
 
-function renderStars(rating) {
-  const full = Math.floor(rating);
-  const half = rating - full >= 0.5;
-  let out = '';
-  for (let i = 0; i < 5; i++) {
-    if (i < full) out += '★';
-    else if (i === full && half) out += '⯨';
-    else out += '☆';
-  }
-  return out;
-}
-
-/* eager=true is for the single product/collection card the person just
-   searched for — that's the one thing on screen they're waiting on, so it
-   loads immediately at high priority. Everything else (trending grid)
-   stays lazy + low priority so the browser only spends bandwidth on
-   photos that are actually about to scroll into view. Every photo also
-   fades in on load (see .media-photo in style.css) instead of popping in,
-   which hides the load time behind the existing gradient placeholder. */
-function productMedia(media, alt, eager = false) {
-  if (media.image) {
-    const loading = eager ? 'eager' : 'lazy';
-    const priority = eager ? 'high' : 'low';
-    return `<img src="${media.image}" alt="${alt}" loading="${loading}" decoding="async" fetchpriority="${priority}" class="media-photo" onload="this.classList.add('is-loaded')" onerror="this.classList.add('is-loaded')">`;
-  }
-  return `<div class="media-icon">${iconSvg(media.icon)}</div>`;
-}
-
-/* Merges a variant's overrides (image/price/originalPrice) on top of the
-   product's own defaults, so a variant only has to specify what's different. */
-function resolveVariant(product, variantIndex) {
-  if (!product.variants || !product.variants.length) return null;
-  const variant = product.variants[variantIndex] || product.variants[0];
-  return {
-    label: variant.label,
-    affiliateLink: variant.affiliateLink,
-    image: variant.image || product.image,
-    icon: variant.icon || product.icon,
-    price: variant.price ?? product.price,
-    originalPrice: variant.originalPrice ?? product.originalPrice
-  };
-}
-
-function buildResultCard(product, variantIndex) {
-  const variant = resolveVariant(product, variantIndex || 0);
-  const media = variant || product;
-  const link = variant ? variant.affiliateLink : product.affiliateLink;
-  const price = variant ? variant.price : product.price;
-  const originalPrice = variant ? variant.originalPrice : product.originalPrice;
-
-  const discount = originalPrice
-    ? Math.round(100 - (price / originalPrice) * 100)
-    : null;
-
-  const variantPicker = product.variants ? `
-    <div class="variant-picker" role="group" aria-label="Choose an option">
-      ${product.variants.map((v, i) => `
-        <button
-          type="button"
-          class="variant-pill ${i === (variantIndex || 0) ? 'active' : ''}"
-          data-variant-index="${i}"
-        >${v.label}</button>
-      `).join('')}
-    </div>
-  ` : '';
-
-  return `
-    <div class="result-media">
-      ${productMedia(media, product.name, true)}
-      ${discount ? `<span class="discount-pill">${discount}% off</span>` : ''}
-    </div>
-    <div class="result-body">
-      <span class="result-category">${product.category}</span>
-      <h2 class="result-name">${product.name}</h2>
-      <p class="result-tagline">${product.tagline}</p>
-
-      <div class="result-rating">
-        <span class="stars" aria-hidden="true">${renderStars(product.rating)}</span>
-        <span class="rating-text">${product.rating} · ${product.reviews.toLocaleString('en-IN')} reviews</span>
-      </div>
-
-      <ul class="result-highlights">
-        ${product.highlights.map(h => `<li>${h}</li>`).join('')}
-      </ul>
-
-      ${variantPicker}
-
-      <div class="result-footer">
-        <div class="result-price">
-          <span class="price-now">${formatPrice(product.currency, price)}</span>
-          ${originalPrice ? `<span class="price-was">${formatPrice(product.currency, originalPrice)}</span>` : ''}
-        </div>
-        <a class="result-cta" href="${link}" target="_blank" rel="noopener sponsored">
-          Get this deal
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-      <p class="result-code">Code ${product.id}${variant ? ` · ${variant.label}` : ''}</p>
-    </div>
-  `;
-}
-
-/* ==========================================================================
-   Collections — a single code opens a browsable set of distinct products
-   (e.g. 6 keychain designs). Unlike variants, each item is its own
-   product with its own name/price/highlights/link, not just a colour
-   swap of one item.
-   ========================================================================== */
-
-function buildCollectionCard(collection, itemIndex) {
-  const total = collection.items.length;
-  const index = ((itemIndex || 0) % total + total) % total;
-  const item = collection.items[index];
-
-  const discount = item.originalPrice
-    ? Math.round(100 - (item.price / item.originalPrice) * 100)
-    : null;
-
-  const dots = collection.items.map((_, i) => `
-    <button
-      type="button"
-      class="collection-dot ${i === index ? 'active' : ''}"
-      data-index="${i}"
-      aria-label="Show item ${i + 1} of ${total}"
-    ></button>
-  `).join('');
-
-  return `
-    <div class="result-media collection-media">
-      <button type="button" class="collection-arrow collection-arrow-prev" data-dir="-1" aria-label="Previous item">
-        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 4.5L6 10l6.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      ${productMedia(item, item.name, true)}
-      <button type="button" class="collection-arrow collection-arrow-next" data-dir="1" aria-label="Next item">
-        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 4.5L14 10l-6.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      ${discount ? `<span class="discount-pill">${discount}% off</span>` : ''}
-      <span class="collection-counter">${index + 1} / ${total}</span>
-    </div>
-    <div class="result-body">
-      <span class="result-category">${collection.category} · ${collection.name}</span>
-      <h2 class="result-name">${item.name}</h2>
-      <p class="result-tagline">${item.tagline}</p>
-
-      <div class="result-rating">
-        <span class="stars" aria-hidden="true">${renderStars(item.rating)}</span>
-        <span class="rating-text">${item.rating} · ${item.reviews.toLocaleString('en-IN')} reviews</span>
-      </div>
-
-      <ul class="result-highlights">
-        ${item.highlights.map(h => `<li>${h}</li>`).join('')}
-      </ul>
-
-      <div class="collection-dots" role="tablist" aria-label="Choose an item in this collection">
-        ${dots}
-      </div>
-
-      <div class="result-footer">
-        <div class="result-price">
-          <span class="price-now">${formatPrice(item.currency, item.price)}</span>
-          ${item.originalPrice ? `<span class="price-was">${formatPrice(item.currency, item.originalPrice)}</span>` : ''}
-        </div>
-        <a class="result-cta" href="${item.affiliateLink}" target="_blank" rel="noopener sponsored">
-          Get this deal
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-      <p class="result-code">Code ${collection.id} · Item ${index + 1} of ${total}</p>
-    </div>
-  `;
-}
-
-function attachCollectionListeners(resultCard, collection, currentIndex) {
-  resultCard.querySelectorAll('.collection-arrow').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const dir = Number(btn.getAttribute('data-dir'));
-      showResult(collection, currentIndex + dir, false);
-    });
+const revealIO = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    en.target.classList.add('in');
+    en.target.querySelectorAll('[data-count]').forEach(el => reduceMotion ? (el.textContent = Number(el.dataset.count).toLocaleString('en-IN', { minimumFractionDigits: Number(el.dataset.dec) || 0 })) : countUp(el));
+    revealIO.unobserve(en.target);
   });
-  resultCard.querySelectorAll('.collection-dot').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const index = Number(btn.getAttribute('data-index'));
-      showResult(collection, index, false);
-    });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+/* dashboard bars */
+(function () {
+  const heights = [38, 52, 45, 60, 55, 72, 66, 80, 74, 88, 82, 96];
+  const wrap = document.getElementById('bars');
+  if (wrap) wrap.innerHTML = heights.map((h, i) => `<i style="--h:${h};--i:${i}"></i>`).join('');
+})();
+
+/* ---------- hanging cards: flip on tap (touch) ---------- */
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    if (!canHover) {
+      const wasFlipped = card.classList.contains('flipped');
+      document.querySelectorAll('.card.flipped').forEach(c => c.classList.remove('flipped'));
+      if (!wasFlipped) card.classList.add('flipped');
+    }
   });
-}
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.classList.toggle('flipped'); }
+  });
+});
 
-function showResult(product, index, isNewSearch = true) {
-  const resultSection = document.getElementById('resultSection');
-  const resultCard = document.getElementById('resultCard');
-  const emptyState = document.getElementById('emptyState');
+/* ---------- cluttered -> focused scribble ---------- */
+(function () {
+  const figure = document.getElementById('focus');
+  const group = document.getElementById('strands');
+  const pencil = document.getElementById('pencil');
+  if (!figure) return;
 
-  emptyState.hidden = true;
-  resultSection.hidden = false;
+  const NS = 'http://www.w3.org/2000/svg';
+  const W = 520, H = 300, N = 150, S = 7, cy = H / 2;
 
-  // Swapping a variant, or flipping through a collection, re-renders just
-  // the card body — attach listeners each time, and only replay the
-  // reveal animation on a brand-new search, not on every click.
-  if (product.type === 'collection') {
-    const total = product.items.length;
-    const currentIndex = ((index || 0) % total + total) % total;
-    resultCard.innerHTML = buildCollectionCard(product, currentIndex);
-    attachCollectionListeners(resultCard, product, currentIndex);
-  } else {
-    resultCard.innerHTML = buildResultCard(product, index || 0);
-    resultCard.querySelectorAll('.variant-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const variantIndex = Number(btn.getAttribute('data-variant-index'));
-        showResult(product, variantIndex, false);
-      });
-    });
+  function rng(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
   }
+  const r = rng(11);
 
-  if (isNewSearch) {
-    resultSection.classList.remove('reveal');
-    void resultSection.offsetWidth; // restart animation
-    resultSection.classList.add('reveal');
-    resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
+  const strands = Array.from({ length: S }, () => ({
+    ax: 28 + r() * 42, fx: 2 + r() * 4, px: r() * 6.28, wx: (r() - .5) * 1.6,
+    ay: 30 + r() * 48, fy: 2.5 + r() * 5, py: r() * 6.28, wy: (r() - .5) * 1.6,
+    ay2: 10 + r() * 26, fy2: 7 + r() * 7, py2: r() * 6.28
+  }));
 
-function showEmpty() {
-  const resultSection = document.getElementById('resultSection');
-  const emptyState = document.getElementById('emptyState');
-
-  resultSection.hidden = true;
-  emptyState.hidden = false;
-  emptyState.classList.remove('reveal');
-  void emptyState.offsetWidth;
-  emptyState.classList.add('reveal');
-  emptyState.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function handleLookup(rawValue) {
-  const value = rawValue.trim();
-  if (!value) return;
-
-  const product = PRODUCTS[value] || PRODUCTS[value.toUpperCase()];
-  if (product) {
-    showResult(product);
-  } else {
-    showEmpty();
-  }
-}
-
-function buildTrendingCard(product) {
-  if (product.type === 'collection') {
-    const preview = product.items[0];
-    const lowestPrice = Math.min(...product.items.map(i => i.price));
-    return `
-      <a class="trend-card" href="#" data-code="${product.id}">
-        <div class="trend-media">${productMedia(preview, product.name)}</div>
-        <div class="trend-body">
-          <span class="trend-category">${product.category} · ${product.items.length} items</span>
-          <h3>${product.name}</h3>
-          <div class="trend-price">
-            <span>From ${formatPrice(preview.currency, lowestPrice)}</span>
-            <span class="trend-code">Code ${product.id}</span>
-          </div>
-        </div>
-      </a>
-    `;
-  }
-
-  const hasVariants = product.variants && product.variants.length > 0;
-  return `
-    <a class="trend-card" href="#" data-code="${product.id}">
-      <div class="trend-media">${productMedia(product, product.name)}</div>
-      <div class="trend-body">
-        <span class="trend-category">${product.category}${hasVariants ? ' · ' + product.variants.length + ' options' : ''}</span>
-        <h3>${product.name}</h3>
-        <div class="trend-price">
-          <span>${formatPrice(product.currency, product.price)}</span>
-          <span class="trend-code">Code ${product.id}</span>
-        </div>
-      </div>
-    </a>
-  `;
-}
-
-/* ==========================================================================
-   Trending grid — shown in batches instead of all at once.
-   --------------------------------------------------------------------------
-   With just a couple of products this made no difference, but as the
-   catalog grows, dumping every card (and every photo) into the page on
-   load would mean the browser tries to fetch dozens of images at once.
-   Rendering a first batch and revealing more on demand keeps the initial
-   page light no matter how many products get added later.
-   ========================================================================== */
-
-const TRENDING_BATCH_SIZE = 8;
-let trendingVisibleCount = TRENDING_BATCH_SIZE;
-
-function renderTrending() {
-  const grid = document.getElementById('trendingGrid');
-  const items = Object.values(PRODUCTS);
-  const visibleItems = items.slice(0, trendingVisibleCount);
-
-  grid.innerHTML = visibleItems.map(buildTrendingCard).join('');
-
-  grid.querySelectorAll('.trend-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      const code = card.getAttribute('data-code');
-      document.getElementById('productId').value = code;
-      handleLookup(code);
-    });
+  const paths = strands.map((s, i) => {
+    const p = document.createElementNS(NS, 'path');
+    p.setAttribute('stroke-width', i === 0 ? 2.6 : 1.3);
+    group.appendChild(p);
+    return p;
   });
 
-  renderLoadMoreButton(items.length);
-}
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-function renderLoadMoreButton(totalCount) {
-  const trendingSection = document.getElementById('trending');
-  let btn = document.getElementById('loadMoreTrending');
-
-  if (trendingVisibleCount >= totalCount) {
-    if (btn) btn.remove();
-    return;
+  function pt(s, u, k, t) {
+    const e = 0.3 + 0.7 * Math.sin(Math.PI * u);
+    const x0 = 24 + u * (W - 108);
+    const x = x0 + k * e * s.ax * Math.sin(s.fx * u * 6.283 + s.px + t * s.wx);
+    const y = cy + k * e * (s.ay * Math.sin(s.fy * u * 6.283 + s.py + t * s.wy) + s.ay2 * Math.sin(s.fy2 * u * 6.283 + s.py2));
+    return [clamp(x, 8, W - 90), clamp(y, 12, H - 12)];
   }
 
-  if (!btn) {
-    btn = document.createElement('button');
-    btn.type = 'button';
-    btn.id = 'loadMoreTrending';
-    btn.className = 'load-more-btn';
-    btn.addEventListener('click', () => {
-      trendingVisibleCount += TRENDING_BATCH_SIZE;
-      renderTrending();
+  let intro = reduceMotion ? 1 : 0;
+  let p = 0, target = 0, visible = true, auto = null, userTouched = false;
+  const easeIn = v => 1 - Math.pow(1 - v, 3);
+
+  function render(ts) {
+    const t = reduceMotion ? 0 : ts / 1000;
+    if (intro < 1) intro = Math.min(1, intro + 0.0065);
+    p += (target - p) * 0.085;
+    if (Math.abs(target - p) < 0.0005) p = target;
+    const pe = p * p * (3 - 2 * p);
+    const k = 1 - pe;
+    const kmax = Math.max(1, Math.floor(easeIn(intro) * (N - 1)));
+
+    strands.forEach((s, i) => {
+      let d = '';
+      for (let j = 0; j <= kmax; j++) {
+        const q = pt(s, j / (N - 1), k, t);
+        d += (j ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+      }
+      paths[i].setAttribute('d', d);
+      paths[i].style.opacity = i === 0 ? 1 : (0.5 * k).toFixed(3);
     });
-    trendingSection.appendChild(btn);
+
+    const tip = pt(strands[0], kmax / (N - 1), k, t);
+    pencil.setAttribute('transform', `translate(${tip[0].toFixed(1)} ${tip[1].toFixed(1)}) rotate(-40)`);
   }
 
-  const remaining = totalCount - trendingVisibleCount;
-  btn.textContent = `Show more (${remaining} left)`;
-}
+  function loop(ts) {
+    requestAnimationFrame(loop);
+    if (visible) render(ts);
+  }
+  requestAnimationFrame(loop);
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderTrending();
+  function setFocus(on) {
+    target = on ? 1 : 0;
+    figure.classList.toggle('is-focused', on);
+  }
 
-  const form = document.getElementById('lookupForm');
-  const input = document.getElementById('productId');
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold: 0 }).observe(figure);
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    handleLookup(input.value);
+  // desktop: hover
+  figure.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') setFocus(true); });
+  figure.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') setFocus(false); });
+  // touch / keyboard: tap toggles
+  figure.addEventListener('click', () => {
+    if (canHover) return;
+    userTouched = true; clearInterval(auto);
+    setFocus(target === 0);
   });
+  figure.addEventListener('focus', () => setFocus(true));
+  figure.addEventListener('blur', () => setFocus(false));
+
+  // touch devices: gently demo the effect until the visitor taps it
+  if (!canHover && !reduceMotion) {
+    setTimeout(() => {
+      if (userTouched) return;
+      setFocus(true);
+      auto = setInterval(() => { if (visible && !userTouched) setFocus(target === 0); }, 3800);
+    }, 3200);
+  }
+})();
+
+/* ---------- pixel analytics background ---------- */
+(function () {
+  const cv = document.getElementById('px');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H, cell, cols, rows, heat, sparks, sprites, dpr;
+  const mouse = { x: -999, y: -999 };
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cell = W < 700 ? 8 : 10;
+    cols = Math.ceil(W / cell); rows = Math.ceil(H / cell);
+    heat = new Float32Array(cols * rows);
+
+    // sparse twinkling pixels
+    const count = Math.floor(cols * rows / 70);
+    sparks = Array.from({ length: count }, () => ({ x: (Math.random() * cols) | 0, y: (Math.random() * rows) | 0, ph: Math.random() * 6.28 }));
+
+    // floating analysis icons
+    const list = [
+      ['magnifier', .07, .2], ['eye', .86, .16], ['sigma', .8, .52],
+      ['trend', .1, .58], ['bars', .46, .08], ['table', .62, .72]
+    ];
+    const use = W < 700 ? list.slice(0, 4) : list;
+    sprites = use.map(([n, fx, fy], i) => ({ n, x: Math.round(fx * cols), y: Math.round(fy * rows), ph: i * 1.7 }));
+    if (reduceMotion) draw(0);
+  }
+
+  function drawSprite(s, t) {
+    const rowsArr = SPRITES[s.n];
+    const oy = Math.round(Math.sin(t * 0.0006 + s.ph) * 2);
+    const flick = 0.09 + 0.04 * Math.sin(t * 0.002 + s.ph);
+    ctx.fillStyle = `rgba(10,10,10,${flick})`;
+    rowsArr.forEach((row, y) => {
+      for (let x = 0; x < row.length; x++) {
+        if (row[x] === '#') ctx.fillRect((s.x + x) * cell, (s.y + y + oy) * cell, cell - 1, cell - 1);
+      }
+    });
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+
+    // twinkles
+    for (const s of sparks) {
+      const a = 0.04 + 0.07 * (0.5 + 0.5 * Math.sin(t * 0.0015 + s.ph));
+      ctx.fillStyle = `rgba(10,10,10,${a})`;
+      ctx.fillRect(s.x * cell, s.y * cell, cell - 1, cell - 1);
+    }
+
+    // pixel bar chart rising from the bottom
+    const period = 5, nb = Math.ceil(cols / period);
+    for (let b = 0; b < nb; b++) {
+      const wave = 0.5 + 0.5 * Math.sin(b * 0.7 + t * 0.0009);
+      const mod = 0.6 + 0.4 * Math.sin(b * 1.9 - t * 0.0005);
+      const hc = Math.floor(rows * 0.28 * wave * mod) + 2;
+      for (let j = 0; j < hc; j++) {
+        const top = j === hc - 1;
+        const a = top ? 0.2 : 0.07 * (1 - j / hc) + 0.012;
+        ctx.fillStyle = `rgba(10,10,10,${a})`;
+        for (let w = 0; w < 3; w++) {
+          const cx = b * period + w;
+          if (cx < cols) ctx.fillRect(cx * cell, (rows - 1 - j) * cell, cell - 1, cell - 1);
+        }
+      }
+    }
+
+    // cursor heat trail
+    for (let i = 0; i < heat.length; i++) {
+      const h = heat[i];
+      if (h > 0.02) {
+        const x = i % cols, y = (i / cols) | 0;
+        ctx.fillStyle = `rgba(10,10,10,${h * 0.22})`;
+        ctx.fillRect(x * cell, y * cell, cell - 1, cell - 1);
+        heat[i] = h * 0.93;
+      }
+    }
+
+    sprites.forEach(s => drawSprite(s, t));
+  }
+
+  function stamp(px, py) {
+    const cx = (px / cell) | 0, cy = (py / cell) | 0;
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) {
+      if (dx * dx + dy * dy > 5) continue;
+      const x = cx + dx, y = cy + dy;
+      if (x >= 0 && y >= 0 && x < cols && y < rows) heat[y * cols + x] = 1;
+    }
+  }
+  addEventListener('pointermove', e => stamp(e.clientX, e.clientY), { passive: true });
+
+  let last = 0;
+  function loop(t) {
+    requestAnimationFrame(loop);
+    if (document.hidden || t - last < 33) return;
+    last = t;
+    draw(t);
+  }
+
+  let rw = innerWidth;
+  addEventListener('resize', () => { if (innerWidth !== rw) { rw = innerWidth; resize(); } });
+  resize();
+  if (!reduceMotion) requestAnimationFrame(loop);
+})();
+
+/* ---------- contact form -> WhatsApp ---------- */
+document.getElementById('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const d = new FormData(e.target);
+  const text = `hi beyond numbers! i'm ${d.get('name')} from ${d.get('business')}. i need: ${d.get('need')}.` + (d.get('message') ? `\n${d.get('message')}` : '');
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
 });
