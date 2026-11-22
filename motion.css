@@ -1,0 +1,75 @@
+/* beyond numbers — motion.css (add-on, load AFTER style.css) */
+
+/* ---------- loader ---------- */
+.loader{position:fixed;inset:0;z-index:200;background:var(--ink);color:var(--bg);display:grid;place-items:center;transition:transform .9s cubic-bezier(.76,0,.24,1)}
+.loader.done{transform:translateY(-100%)}
+.loader-in{display:grid;gap:18px;justify-items:center}
+.loader-word{font:700 clamp(1.8rem,6vw,3rem)/1 var(--sans);letter-spacing:-.04em}
+.loader-bar{display:flex;gap:4px}
+.loader-bar i{width:10px;height:10px;background:rgba(245,244,239,.18);transition:background .15s}
+.loader-bar i.on{background:var(--bg)}
+
+/* ---------- split-text word reveal (h1 / h2) ---------- */
+.mo .split .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.15em;margin-bottom:-.15em}
+.mo .split .wi{display:inline-block;transform:translateY(115%);transition:transform .9s var(--ease) calc(var(--wi) * 70ms)}
+.mo .split.go .wi{transform:none}
+
+/* ---------- hero entrance + parallax ---------- */
+.mo .hero-copy > :not(h1){opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.mo .hero-copy.go > :not(h1){opacity:1;transform:none}
+.mo .hero-copy.go > .lead{transition-delay:.45s}
+.mo .hero-copy.go > .cta{transition-delay:.6s}
+.mo .hero-copy.go > .proof{transition-delay:.75s}
+.hero-copy,.focus{will-change:translate}
+.focus{transition:transform .25s ease-out}
+
+/* ---------- nav hides on scroll down ---------- */
+.nav{transition:transform .45s var(--ease)}
+.nav.hide{transform:translateY(-100%)}
+
+/* ---------- custom cursor (desktop only) ---------- */
+.cur-dot,.cur-ring{position:fixed;left:0;top:0;z-index:300;pointer-events:none;mix-blend-mode:difference;opacity:0;transition:opacity .3s}
+.has-cur .cur-dot,.has-cur .cur-ring{opacity:1}
+.cur-dot{width:8px;height:8px;background:#fff;border-radius:50%}
+.cur-ring{width:38px;height:38px}
+.cur-ring i{position:absolute;inset:0;border:1.5px solid #fff;border-radius:50%;display:grid;place-items:center;font:500 .5rem var(--mono);text-transform:uppercase;letter-spacing:.04em;color:#000;transition:transform .35s var(--ease),background .3s}
+.cur-ring.hot i{transform:scale(1.5)}
+.cur-ring.txt i{transform:scale(2);background:#fff}
+html.has-cur,html.has-cur *:not(input):not(textarea):not(select){cursor:none!important}
+
+/* ---------- magnetic buttons ---------- */
+.btn{transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s,color .2s,translate .35s var(--ease)}
+
+/* ---------- click pixel burst ---------- */
+.burst{position:fixed;z-index:9999;pointer-events:none;background:#fff;mix-blend-mode:difference}
+
+/* ---------- hanging cards drop in ---------- */
+.js .hang.reveal{transform:translateY(-60px) rotate(-5deg)}
+.js .hang.reveal.in{transform:none;transition:opacity .6s var(--ease) var(--d,0ms),transform 1.2s cubic-bezier(.34,1.56,.64,1) var(--d,0ms)}
+
+/* ---------- process: line draws in ---------- */
+.steps li::after{content:'';position:absolute;top:-2px;left:0;height:3px;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;transition:transform 1s var(--ease) calc(var(--d,0ms) + 300ms)}
+.steps li.in::after{transform:scaleX(1)}
+
+/* ---------- tags pop ---------- */
+@keyframes pop{from{opacity:0;transform:scale(.8) translateY(10px)}}
+.mo .tags.in li{animation:pop .55s var(--ease) backwards;animation-delay:calc(var(--k,0) * 60ms)}
+
+/* ---------- live dashboard ---------- */
+.dash{position:relative;overflow:hidden}
+.dash::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(245,244,239,.1),transparent 70%)}
+.dash:hover::after{opacity:1}
+.bars i{transition:transform .9s var(--ease) calc(var(--i) * 70ms),height .8s var(--ease)}
+@keyframes flash{0%{background:rgba(125,255,154,.25)}100%{background:transparent}}
+.kpi.flash{animation:flash .9s ease-out}
+
+/* ---------- marquee driven by JS (scroll velocity) ---------- */
+.track{animation:none!important;will-change:transform}
+
+/* ---------- giant footer wordmark ---------- */
+.giant{display:flex;justify-content:center;font-weight:700;font-size:clamp(2.2rem,11.5vw,10rem);letter-spacing:-.05em;line-height:1;padding:64px 0 14px;white-space:nowrap;color:transparent;-webkit-text-stroke:1.5px rgba(245,244,239,.55);user-select:none}
+.giant .gl{display:inline-block;overflow:hidden;padding-bottom:.12em}
+.giant .gl b{display:inline-block;font-weight:700;transform:translateY(105%);transition:transform .9s var(--ease) calc(var(--i) * 45ms),color .3s}
+.giant.go .gl b{transform:none}
+.giant .gl b:hover{color:var(--bg)}
+.giant .sp{display:inline-block;width:.28em}
