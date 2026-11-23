@@ -2,8 +2,8 @@
 
 /* ============ EDIT THESE ============ */
 const CONFIG = {
-  whatsapp: "919999999999",        // your number with country code, no + or spaces
-  email: "hello@beyondnumbers.in"  // your email
+  whatsapp: "917303314027",        // your number with country code, no + or spaces
+  email: "sahilkmar32@gmail.com"  // your email
 };
 /* ==================================== */
 
@@ -187,13 +187,6 @@ const revealIO = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
-
-/* dashboard bars */
-(function () {
-  const heights = [38, 52, 45, 60, 55, 72, 66, 80, 74, 88, 82, 96];
-  const wrap = document.getElementById('bars');
-  if (wrap) wrap.innerHTML = heights.map((h, i) => `<i style="--h:${h};--i:${i}"></i>`).join('');
-})();
 
 /* ---------- hanging cards: flip on tap (touch) ---------- */
 document.querySelectorAll('.card').forEach(card => {
