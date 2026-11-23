@@ -89,7 +89,7 @@
 
     /* ---------- section heads ---------- */
     section{position:relative}
-    .services,.process,.preview,.who{padding:100px 0 30px}
+    .services,.preview,.who{padding:100px 0 30px}
     .services{padding-top:40px}
     .head{margin-bottom:46px;max-width:760px}
     .kicker{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin-bottom:14px}
@@ -163,13 +163,6 @@
     .front h3{font-size:1.35rem}
     }
 
-    /* ---------- process ---------- */
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-    .steps li{border-top:1.5px solid var(--ink);padding-top:18px;position:relative}
-    .steps li::before{content:'';position:absolute;top:-5px;left:0;width:9px;height:9px;background:var(--ink)}
-    .n{font-size:.8rem;color:var(--mute)}
-    .steps h3{font-size:1.3rem;letter-spacing:-.02em;margin:8px 0 8px}
-    .steps p{color:var(--mute);font-size:.95rem}
 
     /* ---------- preview ---------- */
     .preview{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
@@ -247,7 +240,7 @@
     .hero{grid-template-columns:1fr;gap:44px;padding-top:104px;min-height:auto}
     .preview,.contact-in{grid-template-columns:1fr;gap:40px}
     .steps{grid-template-columns:repeat(2,1fr);row-gap:34px}
-    .services,.process,.preview,.who{padding-top:80px}
+    .services,.preview,.who{padding-top:80px}
     .services{padding-top:30px}
     .tools-strip{padding-top:36px}
     .burger{display:block}
