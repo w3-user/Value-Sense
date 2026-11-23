@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0a0a'/%3E%3Crect x='3' y='9' width='3' height='4' fill='%23fff'/%3E%3Crect x='7' y='6' width='3' height='7' fill='%23fff'/%3E%3Crect x='11' y='3' width='3' height='10' fill='%23fff'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="style.css?v=bars20261124">
+  <link rel="stylesheet" href="motion.css?v=bars20261124">
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -45,12 +45,6 @@
           <a class="btn solid" href="#contact">get a free data audit</a>
           <a class="btn ghost" href="#services">see what we do</a>
         </div>
-        <ul class="proof mono">
-            <li data-tool="excel">excel</li>
-            <li data-tool="powerbi">power bi</li>
-            <li data-tool="powerquery">power query</li>
-            <li data-tool="dax">dax</li>
-        </ul>
       </div>
 
       <figure class="focus" id="focus" tabindex="0" aria-label="a cluttered scribble that straightens into one clear line when you hover or tap">
@@ -80,6 +74,16 @@
             <span data-tool="excel">microsoft excel</span><span data-tool="powerbi">power bi</span><span data-tool="powerquery">power query</span><span data-tool="dax">dax</span><span data-tool="pivot">pivot tables</span><span data-tool="vba">vba macros</span><span data-tool="sheets">google sheets</span><span data-tool="sql">sql</span>
         </div>
     </section>
+
+    <!-- TOOLS STRIP (moved from hero, sits right above services) -->
+    <div class="wrap tools-strip">
+      <ul class="proof mono">
+        <li data-tool="excel">excel</li>
+        <li data-tool="powerbi">power bi</li>
+        <li data-tool="powerquery">power query</li>
+        <li data-tool="dax">dax</li>
+      </ul>
+    </div>
 
     <!-- SERVICES: hanging cards -->
     <section class="services wrap" id="services">
@@ -230,35 +234,27 @@
         <a class="btn solid" href="#contact">see it on your data</a>
       </div>
 
-      <div class="dash reveal" id="dash" style="--d:120ms">
+      <figure class="dash reveal" id="dash" style="--d:120ms">
+        <span class="chip mono">fig. 02</span>
         <div class="dash-top">
           <span class="dots"><i></i><i></i><i></i></span>
           <span class="mono">sales_overview · sample view</span>
           <span class="live mono"><b></b>live</span>
         </div>
-        <div class="kpis">
-          <div class="kpi"><span class="mono lab">revenue</span><strong>₹<span data-count="24.8" data-dec="1">0</span>L</strong><em class="up mono">▲ 12.4%</em></div>
-          <div class="kpi"><span class="mono lab">orders</span><strong><span data-count="1284">0</span></strong><em class="up mono">▲ 8.1%</em></div>
-          <div class="kpi"><span class="mono lab">margin</span><strong><span data-count="18.4" data-dec="1">0</span>%</strong><em class="dn mono">▼ 1.2%</em></div>
-        </div>
-        <div class="charts">
-          <div class="chartbox">
-            <span class="mono lab">monthly revenue</span>
-            <div class="bars" id="bars"></div>
-          </div>
-          <div class="chartbox">
-            <span class="mono lab">top products</span>
-            <div class="meters">
-              <div class="m"><span>product a</span><i style="--w:92%"></i></div>
-              <div class="m"><span>product b</span><i style="--w:71%"></i></div>
-              <div class="m"><span>product c</span><i style="--w:54%"></i></div>
-              <div class="m"><span>product d</span><i style="--w:33%"></i></div>
-            </div>
-            <svg class="spark" viewBox="0 0 200 50" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M0 42 L25 36 L50 40 L75 28 L100 31 L125 20 L150 24 L175 10 L200 6"/></svg>
+        <div class="growth-bars" role="img" aria-label="Five bars rising one after another, showing data growing as reporting becomes automated">
+          <div class="bar-chart">
+            <svg class="trend" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <polyline points="10,82 30,63 50,45 70,26 90,8"/>
+            </svg>
+            <div class="bar-item" style="--h:18%;--i:0"><span class="bar-value mono">20</span><i></i><span class="bar-month mono">collect</span></div>
+            <div class="bar-item" style="--h:37%;--i:1"><span class="bar-value mono">40</span><i></i><span class="bar-month mono">clean</span></div>
+            <div class="bar-item" style="--h:55%;--i:2"><span class="bar-value mono">60</span><i></i><span class="bar-month mono">merge</span></div>
+            <div class="bar-item" style="--h:74%;--i:3"><span class="bar-value mono">80</span><i></i><span class="bar-month mono">report</span></div>
+            <div class="bar-item" style="--h:92%;--i:4"><span class="bar-value mono">100</span><i></i><span class="bar-month mono">live</span></div>
           </div>
         </div>
-        <p class="mono note">illustrative data. your dashboard uses your numbers.</p>
-      </div>
+        <p class="mono note">illustrative: % of reporting automated.</p>
+      </figure>
     </section>
 
     <!-- WHO -->
@@ -280,7 +276,7 @@
           <h2>send us one messy sheet.<br><span class="soft">we'll show you what's inside it.</span></h2>
           <p class="sub">free data audit. you share a sample file, we reply with what we'd clean, automate and visualise.</p>
           <p class="mono reach">
-            <a data-email href="#">hello@beyondnumbers.in</a><br>
+            <a data-email href="#">sahilkmar32@gmail.com</a><br>
             <a data-wa href="#" target="_blank" rel="noopener">whatsapp us →</a>
           </p>
         </div>
@@ -311,7 +307,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
-  <script src="motion.js"></script>
+  <script src="script.js?v=bars20261124"></script>
+  <script src="motion.js?v=bars20261124"></script>
 </body>
 </html>
