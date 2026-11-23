@@ -19,7 +19,6 @@
 .mo .hero-copy.go > :not(h1){opacity:1;transform:none}
 .mo .hero-copy.go > .lead{transition-delay:.45s}
 .mo .hero-copy.go > .cta{transition-delay:.6s}
-.mo .hero-copy.go > .proof{transition-delay:.75s}
 .hero-copy,.focus{will-change:translate}
 .focus{transition:transform .25s ease-out}
 
@@ -55,12 +54,11 @@ html.has-cur,html.has-cur *:not(input):not(textarea):not(select){cursor:none!imp
 @keyframes pop{from{opacity:0;transform:scale(.8) translateY(10px)}}
 .mo .tags.in li{animation:pop .55s var(--ease) backwards;animation-delay:calc(var(--k,0) * 60ms)}
 
-/* ---------- live dashboard ---------- */
+/* ---------- live dashboard (fig. 02, light theme) ---------- */
 .dash{position:relative;overflow:hidden}
-.dash::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(245,244,239,.1),transparent 70%)}
+.dash::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(10,10,10,.06),transparent 70%)}
 .dash:hover::after{opacity:1}
-.bars i{transition:transform .9s var(--ease) calc(var(--i) * 70ms),height .8s var(--ease)}
-@keyframes flash{0%{background:rgba(125,255,154,.25)}100%{background:transparent}}
+@keyframes flash{0%{background:rgba(34,197,94,.25)}100%{background:var(--bg)}}
 .kpi.flash{animation:flash .9s ease-out}
 
 /* ---------- marquee driven by JS (scroll velocity) ---------- */
