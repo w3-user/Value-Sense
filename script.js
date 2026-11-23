@@ -2,8 +2,8 @@
 
 /* ============ EDIT THESE ============ */
 const CONFIG = {
-  whatsapp: "919999999999",        // your number with country code, no + or spaces
-  email: "hello@beyondnumbers.in"  // your email
+  whatsapp: "917303314027",        // your number with country code, no + or spaces
+  email: "sahilkmar32@gmail.com"  // your email
 };
 /* ==================================== */
 
