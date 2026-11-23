@@ -419,7 +419,7 @@ document.querySelectorAll('.card').forEach(card => {
 document.getElementById('form').addEventListener('submit', e => {
   e.preventDefault();
   const d = new FormData(e.target);
-  const text = `hi beyond numbers! i'm ${d.get('name')} from ${d.get('business')}. i need: ${d.get('need')}.` + (d.get('message') ? `\n${d.get('message')}` : '');
+  const text = `hi beyond numbers! I'm ${d.get('name')} from ${d.get('business')}. I need: ${d.get('need')}.` + (d.get('message') ? `\n${d.get('message')}` : '');
   window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
 });
 /* ---------- fig. 02: play bars on scroll-in, replay every time ---------- */
