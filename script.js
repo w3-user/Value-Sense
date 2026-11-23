@@ -188,13 +188,6 @@ const revealIO = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
 
-/* dashboard bars */
-(function () {
-  const heights = [38, 52, 45, 60, 55, 72, 66, 80, 74, 88, 82, 96];
-  const wrap = document.getElementById('bars');
-  if (wrap) wrap.innerHTML = heights.map((h, i) => `<i style="--h:${h};--i:${i}"></i>`).join('');
-})();
-
 /* ---------- hanging cards: flip on tap (touch) ---------- */
 document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('click', () => {
@@ -429,3 +422,14 @@ document.getElementById('form').addEventListener('submit', e => {
   const text = `hi beyond numbers! i'm ${d.get('name')} from ${d.get('business')}. i need: ${d.get('need')}.` + (d.get('message') ? `\n${d.get('message')}` : '');
   window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
 });
+/* ---------- fig. 02: play bars on scroll-in, replay every time ---------- */
+(function () {
+  const dash = document.getElementById('dash');
+  if (!dash) return;
+  new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.intersectionRatio >= 0.35) dash.classList.add('in');
+      else if (en.intersectionRatio === 0) dash.classList.remove('in');
+    });
+  }, { threshold: [0, 0.35] }).observe(dash);
+})();
